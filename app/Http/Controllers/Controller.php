@@ -15,7 +15,7 @@ class Controller extends BaseController
 
     public function __construct(){
         $this->middleware(function($request, $next) {
-            if(Auth::guard('check')->check()){
+            if(Auth::check()){
                 $rules=$this->getrules();
                 view()->share('rules', $rules);
             }

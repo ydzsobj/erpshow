@@ -15,13 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 //后台相关路由
-Route::any('/admin/login','Erp\ManagerController@login')->name('login');
+Route::any('/admins/login','Erp\ManagerController@login')->name('login');
 
 Route::middleware(['auth:check'])->group(function(){
     Route::get('/logout',function(){
         Auth::logout();
-        return redirect('/admin/login');
+        return redirect('/admins/login');
     });
-    Route::get('/admin/index','Erp\IndexController@index');
-    Route::get('/admin/home_page','Erp\IndexController@homePage');
+    Route::get('/admins/index','Erp\IndexController@index');
+    Route::get('/admins/home_page','Erp\IndexController@homePage');
+    Route::get('/admins/admin_info','Erp\IndexController@adminInfo');
+    Route::any('/admins/password','Erp\IndexController@password');
+    Route::post('/admins/up_self','Erp\IndexController@upSelf');
 });

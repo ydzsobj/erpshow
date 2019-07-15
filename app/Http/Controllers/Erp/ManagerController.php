@@ -20,15 +20,11 @@ class ManagerController extends Controller
             $validator=Validator::make($request->all(),[
                 "username"=>"required|between:2,16",
                 "password"=>"required|between:4,20",
-                "captcha"=>"required|size:3|captcha",
             ],[
               "username.required"=>"用户名必须填写",
               "username.between"=>"请输入2-16位的用户名",
               "password.required"=>"密码必须填写",
               "password.between"=>"请输入4-20位的密码",
-              "captcha.required"=>"验证码必须填写",
-              "captcha.size"=>"验证码长度为3",
-              "captcha.captcha"=>"验证码验证失败",
             ]);
             if($validator->fails()){
                 return $this->code_response(0, $validator->errors()->first());

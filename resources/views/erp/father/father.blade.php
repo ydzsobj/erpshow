@@ -105,8 +105,8 @@
               <cite>{{Auth::guard('check')->user()->admin_name}}</cite>
             </a>
             <dl class="layui-nav-child">
-              <dd><a lay-href="/admin/storage/admin_info">基本资料</a></dd>
-              <dd><a lay-href="/admin/storage/password">修改密码</a></dd>
+              <dd><a lay-href="/admins/admin_info">基本资料</a></dd>
+              <dd><a lay-href="/admins/password">修改密码</a></dd>
               <hr>
               <dd style="text-align: center;"><a href="/logout">退出</a></dd>
             </dl>
@@ -166,7 +166,7 @@
           </div>
         </div> -->
         <div class="layadmin-tabsbody-item layui-show">
-          <iframe src="/admin/home_page" frameborder="0" class="layadmin-iframe"></iframe>
+          <iframe src="/admins/home_page" frameborder="0" class="layadmin-iframe"></iframe>
         </div>
       </div>
       
