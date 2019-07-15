@@ -82,4 +82,13 @@ class IndexController extends Controller
             return response()->json(['err'=>1,'str'=>'修改成功~']);
         }
     }
+
+    /**
+     * 计算器
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function jsq()
+    {
+        return view('erp.tool.jsq');
+    }
 }

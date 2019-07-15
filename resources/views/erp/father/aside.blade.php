@@ -1,7 +1,8 @@
 <div class="layui-side layui-side-menu">
         <div class="layui-side-scroll">
           <div class="layui-logo" lay-href="/admin/index">
-            <span>热数据管理系统</span>
+              <i class="layui-icon">&#xe857;</i>
+              <span> 仓储数据管理系统</span>
           </div>           
           <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
              <li data-name="home" class="layui-nav-item layui-nav-itemed">
@@ -36,7 +37,7 @@
             @endforeach
              <li data-name="home" class="layui-nav-item ">
               <a href="javascript:;" lay-tips="辅助工具" lay-direction="2">
-                <i class="layui-icon layui-icon-star"></i>
+                <i class="layui-icon layui-icon-util"></i>
                 <cite>辅助工具</cite>
               </a>
               <dl class="layui-nav-child">
@@ -44,19 +45,11 @@
                   <a lay-href="http://baidu.com">Baidu</a>
                 </dd>
                 <dd data-name="console">
-                  <a lay-href="/admin/message/send_phone">短信推送</a>
-                </dd>
-                <dd data-name="console">
-                  <a lay-href="/admin/message/send_mail">邮件推送</a>
-                </dd>
-                 <dd data-name="console">
-                  <a lay-href="/admin/storage/jsq">科学计算器</a>
+                  <a lay-href="/admins/jsq">科学计算器</a>
                 </dd>
               </dl>
             </li>
           </ul>
-         
- 
         </div>
       </div>
 

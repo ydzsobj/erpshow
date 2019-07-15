@@ -27,4 +27,5 @@ Route::middleware(['auth:check'])->group(function(){
     Route::get('/admins/admin_info','Erp\IndexController@adminInfo');
     Route::any('/admins/password','Erp\IndexController@password');
     Route::post('/admins/up_self','Erp\IndexController@upSelf');
+    Route::get('/admins/jsq','Erp\IndexController@jsq');
 });
