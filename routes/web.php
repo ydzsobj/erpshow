@@ -17,15 +17,32 @@ Route::get('/', function () {
 //后台相关路由
 Route::any('/admins/login','Erp\ManagerController@login')->name('login');
 
-Route::middleware(['auth:check'])->group(function(){
-    Route::get('/logout',function(){
+Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],function(){
+    Route::get('logout',function(){
         Auth::logout();
         return redirect('/admins/login');
     });
-    Route::get('/admins/index','Erp\IndexController@index');
-    Route::get('/admins/home_page','Erp\IndexController@homePage');
-    Route::get('/admins/admin_info','Erp\IndexController@adminInfo');
-    Route::any('/admins/password','Erp\IndexController@password');
-    Route::post('/admins/up_self','Erp\IndexController@upSelf');
-    Route::get('/admins/jsq','Erp\IndexController@jsq');
+    Route::get('attribute/get_attr','AttributeController@get_attr');
+
+    Route::get('index','IndexController@index');
+    Route::get('home_page','IndexController@homePage');
+    Route::get('admin_info','IndexController@adminInfo');
+    Route::any('password','IndexController@password');
+    Route::post('up_self','IndexController@upSelf');
+    Route::get('jsq','IndexController@jsq');
+    Route::resource('category','CategoryController');
+    Route::resource('product','ProductController');
+    Route::resource('product_goods','ProductGoodsController');
+    Route::resource('type','TypeController');
+    Route::resource('attribute','AttributeController');
+    Route::resource('attribute_value','AttributeValueController');
+    Route::resource('brand','BrandController');
+
+
+    Route::post('uploader/pic_upload','UploaderController@picUpload');  //图片异步上传
+
+
+
+
+
 });

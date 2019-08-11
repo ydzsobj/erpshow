@@ -16,3 +16,27 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//接管路由··
+$api = app('Dingo\Api\Routing\Router');
+// 配置api版本和路由  V1
+
+$api->version('v1', function ($api) {
+    $api->group(['namespace' => 'App\Http\Controllers\Api'],function ($api){
+        $api->get('/',function (){
+            echo "myApi";
+        });
+    $api->resource('/category','CategoryController', ['only' => ['index']]);
+    $api->resource('/product','ProductController', ['only' => ['index','show']]);
+    $api->resource('/product_goods','ProductGoodsController', ['only' => ['index','show']]);
+    $api->resource('/type','TypeController', ['only' => ['index']]);
+    $api->resource('/attribute','AttributeController', ['only' => ['index']]);
+    $api->resource('/attribute_value','AttributeValueController', ['only' => ['index']]);
+    $api->resource('/brand','BrandController', ['only' => ['index']]);
+
+
+    $api->get('/product/sku/{id}','ProductController@sku');
+
+    });
+});
+

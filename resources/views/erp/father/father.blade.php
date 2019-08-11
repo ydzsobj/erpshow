@@ -57,7 +57,8 @@
   }
   </style>
 </head>
-<body class="layui-layout-body">
+{{--<body class="layui-layout-body">--}}
+<body>
 @section('content')
   <div id="LAY_app">
     <div class="layui-layout layui-layout-admin">
@@ -108,7 +109,7 @@
               <dd><a lay-href="/admins/admin_info">基本资料</a></dd>
               <dd><a lay-href="/admins/password">修改密码</a></dd>
               <hr>
-              <dd style="text-align: center;"><a href="/logout">退出</a></dd>
+              <dd style="text-align: center;"><a href="/admins/logout">退出</a></dd>
             </dl>
           </li>
 
