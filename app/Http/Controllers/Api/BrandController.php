@@ -18,11 +18,11 @@ class BrandController extends Controller
         if($keywords){
             $count = Brand::where(function ($query) use ($keywords){
                 $query->where('id','like',"%{$keywords}%")
-                    ->orWhere('category_name','like',"%{$keywords}%");
+                    ->orWhere('brand_name','like',"%{$keywords}%");
             })->count();
             $data = Brand::where(function ($query) use ($keywords){
                 $query->where('id','like',"%{$keywords}%")
-                    ->orWhere('category_name','like',"%{$keywords}%");
+                    ->orWhere('brand_name','like',"%{$keywords}%");
             })->orderBy('id','desc')->offset(($page-1)*$limit)->limit($limit)->get();
         }else{
             $count = Brand::count();

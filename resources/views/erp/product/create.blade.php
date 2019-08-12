@@ -55,7 +55,7 @@
                     </div>
                     <hr class="layui-bg-gray">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">产品货号</label>
+                        <label class="layui-form-label">产品品牌</label>
                         <div class="layui-input-inline" style="width: 300px;">
                             <select name="brand_id">
                                 <option value="0">请选择品牌</option>

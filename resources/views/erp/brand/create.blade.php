@@ -33,6 +33,14 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">显示</label>
+                <div class="layui-input-inline">
+                    <div class="layui-col-md12">
+                        <input type="checkbox" name="show" lay-skin="switch" lay-text="ON|OFF" checked>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">排序</label>
                 <div class="layui-input-inline" style="width: 50px;">
                     <input type="text" name="sort" value="0" autocomplete="off" class="layui-input">
@@ -94,6 +102,11 @@
             //监听提交
             form.on('submit(form)', function(data){
                 //layer.msg(JSON.stringify(data.field));
+                if(data.field.show == "on") {
+                    data.field.show = "1";
+                } else {
+                    data.field.show = "0";
+                }
                 $.ajax({
                     url:"{{url('admins/brand')}}",
                     type:'post',

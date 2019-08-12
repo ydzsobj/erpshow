@@ -43,6 +43,7 @@ class BrandController extends Controller
             'brand_name'=>$request->brand_name,
             'brand_title'=>$request->brand_title,
             'brand_pic'=>$request->brand_pic,
+            'show'=>$request->show,
             'sort'=>$request->sort,
             'created_at' => date('Y-m-d H:i:s', time()),
         ]);
@@ -89,6 +90,7 @@ class BrandController extends Controller
         $result->brand_name = $request->brand_name;
         $result->brand_title = $request->brand_title;
         $result->brand_pic = $request->brand_pic;
+        $result->show = $request->show;
         $result->sort = $request->sort;
         return $result->save()?'0':'1';
     }
