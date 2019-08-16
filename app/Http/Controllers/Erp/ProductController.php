@@ -73,8 +73,8 @@ class ProductController extends Controller
         if(isset($max_spuId)){$spuId = $max_spuId+1;}else{$spuId = 1;}
         $spuStr = str_pad($spuId,4,'0',STR_PAD_LEFT);
         $cate = Category::where('id',$request->category_id)->first('category_code');
-        $category_code = substr($cate->category_code,0,1);
-        $product_spu = $category_code.'000'.$spuStr;
+        $category_code = substr($cate->category_code,0,2);
+        $product_spu = $category_code.'00'.$spuStr;
 
 
         //存储表单信息
