@@ -36,13 +36,25 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">成本价</label>
                             <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="product_costprice" placeholder="￥" autocomplete="off" class="layui-input">
+                                <input type="text" name="product_cost_price" placeholder="￥" autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-form-mid"></div>
                             <label class="layui-form-label">销售价</label>
                             <div class="layui-input-inline" style="width: 150px;">
                                 <input type="text" name="product_price" placeholder="￥" autocomplete="off" class="layui-input">
                             </div>
+                        </div>
+                    </div>
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">产品品牌</label>
+                        <div class="layui-input-inline" style="width: 300px;">
+                            <select name="brand_id">
+                                <option value="0">请选择品牌</option>
+                                @foreach($brand as $value)
+                                    <option value="{{$value->id}}" @if($value->id==$data->brand_id) selected @endif>{{$value->brand_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <hr class="layui-bg-gray">
@@ -76,13 +88,36 @@
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">主供应商</label>
-                            <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="supllier_id" autocomplete="off" class="layui-input">
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <select name="supplier_id">
+                                    <option value="0">请选择主供应商</option>
+                                    @foreach($supplier as $value)
+                                        <option value="{{$value->id}}" @if($value->id==$data->supplier_id) selected @endif>{{$value->supplier_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="layui-form-mid"></div>
                             <label class="layui-form-label">辅供应商</label>
-                            <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="supllier_bakid" autocomplete="off" class="layui-input">
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <select name="supplier_bid">
+                                    <option value="0">请选择辅供应商</option>
+                                    @foreach($supplier as $value)
+                                        <option value="{{$value->id}}" @if($value->id==$data->supplier_bid) selected @endif>{{$value->supplier_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">主供应链接</label>
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <input type="text" name="supplier_url" placeholder="请输入主供应商链接" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid"></div>
+                            <label class="layui-form-label">辅供应链接</label>
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <input type="text" name="supplier_burl" placeholder="请输入辅供应商链接" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -193,7 +228,7 @@
                     form.val('formData', {
                         "product_name": "{{$data->product_name}}"
                         ,"product_english": "{{$data->product_english}}"
-                        ,"product_costprice": "{{$data->product_costprice}}"
+                        ,"product_cost_price": "{{$data->product_cost_price}}"
                         ,"product_price": "{{$data->product_price}}"
                         ,"brand_id": "{{$data->brand_id}}"
                         ,"product_spu": "{{$data->product_spu}}"
@@ -201,8 +236,8 @@
                         ,"product_size": "{{$data->product_size}}"
                         ,"product_weight": "{{$data->product_weight}}"
                         ,"product_image": "{{$data->product_image}}"
-                        ,"supllier_id": "{{$data->supllier_id}}"
-                        ,"supllier_bakid": "{{$data->supllier_bakid}}"
+                        ,"supplier_url": "{{$data->supplier_url}}"
+                        ,"supplier_burl": "{{$data->supplier_burl}}"
 
                     });
 

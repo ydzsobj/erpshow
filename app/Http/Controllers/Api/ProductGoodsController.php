@@ -22,11 +22,11 @@ class ProductGoodsController extends Controller
             //$data = Product::where('id',$keywords)->orWhere('product_name','like',"%{$keywords}%")->offset(($page-1)*$limit)->limit($limit)->get();
             $count = ProductGoods::where(function ($query) use ($keywords){
                 $query->where('id','like',"%{$keywords}%")
-                    ->orWhere('product_name','like',"%{$keywords}%");
+                    ->orWhere('sku_name','like',"%{$keywords}%");
             })->count();
             $data = ProductGoods::where(function ($query) use ($keywords){
                 $query->where('id','like',"%{$keywords}%")
-                    ->orWhere('product_name','like',"%{$keywords}%");
+                    ->orWhere('sku_name','like',"%{$keywords}%");
             })->orderBy('id','desc')->offset(($page-1)*$limit)->limit($limit)->get();
 
         }else{

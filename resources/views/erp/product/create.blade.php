@@ -16,8 +16,17 @@
                         <label class="layui-form-label">分类名称</label>
                         <div class="layui-input-inline">
                             <select name="category_id" lay-filter="category">
+                                <option value="0">请选择类型</option>
                                 @foreach($category as $value)
-                                    <option value="{{$value->id}}">{{$value->category_name}}</option>
+                                    @if($value->parent_id == 0)
+                                        <optgroup label="{{$value->category_name}}">
+                                            @foreach ($category as $k=>$v)
+                                                @if($v->parent_id == $value->id)
+                                                    <option value="{{$v->id}}">{{$v->category_name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </optgroup>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -45,10 +54,14 @@
                                 <input type="text" name="product_cost_price" placeholder="￥" autocomplete="off"
                                        class="layui-input">
                             </div>
-                            <div class="layui-form-mid"></div>
                             <label class="layui-form-label">销售价</label>
                             <div class="layui-input-inline" style="width: 150px;">
                                 <input type="text" name="product_price" placeholder="￥" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                            <label class="layui-form-label">运费</label>
+                            <div class="layui-input-inline" style="width: 150px;">
+                                <input type="text" name="product_freight" placeholder="￥" autocomplete="off"
                                        class="layui-input">
                             </div>
                         </div>
@@ -66,12 +79,6 @@
                         </div>
                     </div>
                     <hr class="layui-bg-gray">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">产品货号</label>
-                        <div class="layui-input-inline" style="width: 300px;">
-                            <input type="text" name="product_spu" autocomplete="off" class="layui-input" maxlength="6">
-                        </div>
-                    </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">产品条形码</label>
                         <div class="layui-input-inline" style="width: 300px;">
@@ -96,17 +103,40 @@
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">主供应商</label>
-                            <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="supplier_id" autocomplete="off" class="layui-input">
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <select name="supplier_id">
+                                    <option value="0">请选择主供应商</option>
+                                    @foreach($supplier as $value)
+                                        <option value="{{$value->id}}">{{$value->supplier_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="layui-form-mid"></div>
                             <label class="layui-form-label">辅供应商</label>
-                            <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="supplier_bid" autocomplete="off" class="layui-input">
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <select name="supplier_bid">
+                                    <option value="0">请选择辅供应商</option>
+                                    @foreach($supplier as $value)
+                                        <option value="{{$value->id}}">{{$value->supplier_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
-
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">主供应链接</label>
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <input type="text" name="supplier_url" placeholder="请输入主供应商链接" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid"></div>
+                            <label class="layui-form-label">辅供应链接</label>
+                            <div class="layui-input-inline" style="width: 300px;">
+                                <input type="text" name="supplier_burl" placeholder="请输入辅供应商链接" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="layui-bg-gray">
                     <script id="info" type="text/html">
                         <hr class="layui-bg-gray">
                         @{{#  layui.each(d, function(index, i){ }}
@@ -115,7 +145,7 @@
                             <input type="hidden" name="sp_val[@{{i.id}}][attr_name]" value="@{{i.attr_name}}"/>
                             <div class="layui-input-block"  >
                                 @{{#  layui.each(i.attrValue, function(index_1, item){ }}
-                                <input type="checkbox" name="sp_val[@{{i.id}}][attr_value][@{{ item.attr_value_id }}]" value="@{{ item.attr_value_name }}" attr_id="@{{i.id}}" value_id="@{{ item.attr_value_id }}" img_id="@{{item.attr_value_id}}" attr-id="@{{index}}" lay-filter="@{{i.attr_english}}" title="@{{ item.attr_value_name }}" lay-skin="primary" >
+                                <input type="checkbox" name="sp_val[@{{i.id}}][attr_value][@{{ item.attr_value_id }}]" value="@{{ item.attr_value_name }}" attr_code="@{{item.attr_value_code}}" attr_id="@{{i.id}}" value_id="@{{ item.attr_value_id }}" img_id="@{{item.attr_value_id}}" attr-id="@{{index}}" lay-filter="@{{i.attr_english}}" title="@{{ item.attr_value_name }}" lay-skin="primary" >
                                 @{{#  }); }}
                             </div>
                         </div>
@@ -279,6 +309,7 @@
                             dataObj=[];
                             //console.log($(data.elem).attr('attr-id'));
                             data.value_id = $(data.elem).attr('value_id');
+                            data.attr_code=$(data.elem).attr('attr_code');
                             if($(data.elem).attr('attr-id')==0){
                                 data_1.push(data)
                             }else if($(data.elem).attr('attr-id')==1){
@@ -295,12 +326,12 @@
                             data_1.forEach((item, index) => {
                                 //console.log(item);
                                 if(count==1){
-                                    dataObj.push({ title_1:item.value,title_1_id:item.value_id, 'sku_cost_price': '0','sku_price': '0','sku_num': '0','sku_barcode': ''})
+                                    dataObj.push({ title_1:item.value,title_1_id:item.value_id,title_1_code:item.attr_code, 'sku_cost_price': '0','sku_price': '0','sku_num': '0','sku_barcode': ''})
                                 }
                                 if(data_2.length!=0 ){
                                     data_2.forEach((item_1, index) => {
                                         if(count == 2){
-                                            dataObj.push({title_1:item.value,title_2:item_1.value,title_1_id:item.value_id,title_2_id:item_1.value_id, 'sku_cost_price': '0','sku_price': '0','sku_num': '0','sku_barcode': ''})
+                                            dataObj.push({title_1:item.value,title_2:item_1.value,title_1_id:item.value_id,title_2_id:item_1.value_id,title_1_code:item.attr_code,title_2_code:item_1.attr_code, 'sku_cost_price': '0','sku_price': '0','sku_num': '0','sku_barcode': ''})
                                         }
                                         if(data_3.length!=0){
                                             data_3.forEach((item_2, index) => {

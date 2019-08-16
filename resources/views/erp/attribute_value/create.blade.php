@@ -18,13 +18,21 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">属性名称</label>
+                <label class="layui-form-label">属性分类</label>
                 <div class="layui-input-inline">
                     <select name="attr_id">
                         @foreach($attribute as $value)
                             <option value="{{$value->id}}">{{$value->attr_name}}</option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">属性值编码</label>
+                <div class="layui-input-inline">
+                    <div class="layui-col-md12">
+                        <input type="text" name="code" autocomplete="off" class="layui-input" maxlength="2">
+                    </div>
                 </div>
             </div>
             <div class="layui-form-item">

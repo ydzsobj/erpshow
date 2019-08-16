@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductGoods;
 use App\Models\ProductImages;
+use App\Models\Supplier;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,9 +33,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category = (new Category())->tree();
-        $brand = Brand::get();
-        return view('erp.product.create', compact('category','brand'));
+        $category = (new Category())->group();
+        $brand = Brand::where('show','1')->get();
+        $supplier = Supplier::where('show','1')->get();
+        return view('erp.product.create', compact('category','brand','supplier'));
     }
 
     /**
@@ -57,6 +59,7 @@ class ProductController extends Controller
                         $color_image = 'color_image'.$k;
                         $spec_value[$key]['attr_value'][$k]['attr_value_image'] = $request->$color_image;
                     }
+
                     $spec_value[$key]['attr_value'][$k]['attr_value_id'] = $k;
                     $spec_value[$key]['attr_value'][$k]['attr_value_name'] = $v;
                 }
@@ -66,15 +69,23 @@ class ProductController extends Controller
             $request->sp_val='';
         }
 
+        $max_spuId = Product::where('category_id',$request->category_id)->max('spu_id');
+        if(isset($max_spuId)){$spuId = $max_spuId+1;}else{$spuId = 1;}
+        $spuStr = str_pad($spuId,4,'0',STR_PAD_LEFT);
+        $cate = Category::where('id',$request->category_id)->first('category_code');
+        $category_code = substr($cate->category_code,0,1);
+        $product_spu = $category_code.'000'.$spuStr;
+
 
         //存储表单信息
         $arr = [
             'product_name' => $request->product_name,
             'product_english' => $request->product_english,
+            'spu_id' => $spuId,
             'category_id' => $request->category_id,
             'type_id' => $request->type_id,
             'brand_id' => $request->brand_id,
-            'product_spu' => $request->product_spu,
+            'product_spu' => $product_spu,
             'product_barcode' => $request->product_barcode,
             'product_cost_price' => $request->product_cost_price,
             'product_price' => $request->product_price,
@@ -85,12 +96,15 @@ class ProductController extends Controller
             'product_content' => $request->product_content,
             'supplier_id' => $request->supplier_id,
             'supplier_bid' => $request->supplier_bid,
+            'supplier_url' => $request->supplier_url,
+            'supplier_burl' => $request->supplier_burl,
             'product_commend' => $request->product_commend,
             'product_state' => $request->product_state,
             'spec_name' => is_array($request->sp_val) ? serialize($request->sp_val) : serialize(null),
             'spec_value' => is_array($spec_value) ? serialize($spec_value) : serialize(null),
             'created_at' => date('Y-m-d H:i:s', time()),
         ];
+
         $lastId = DB::table('product')->insertGetId($arr);
 
 
@@ -113,10 +127,12 @@ class ProductController extends Controller
                         $sku_value[$i] = ['sku_value_id'=>$value['title_'.$i.'_id'],'sku_value_name'=>$value['title_'.$i]];
                     }
                 }
+                $sku_5 = $value['title_1_code'];
+                if(isset($value['title_2_code'])){$sku_6=$value['title_2_code'];}else{$sku_6='00';}
 
                 $skuArr[] = [
                     'product_id' => $lastId,
-                    'sku_id'=>mt_rand(100000000,999999999),
+                    'sku_id'=>$product_spu.$sku_5.$sku_6,
                     'sku_name'=>$request->product_name,
                     'sku_english' => $request->product_english,
                     'category_id' => $request->category_id,
@@ -135,7 +151,7 @@ class ProductController extends Controller
         }else{
             $skuArr = [
                 'product_id' => $lastId,
-                'sku_id'=>mt_rand(100000000,999999999),
+                'sku_id'=>$product_spu.'0000',
                 'sku_name'=>$request->product_name,
                 'sku_english' => $request->product_english,
                 'category_id' => $request->category_id,
@@ -182,7 +198,9 @@ class ProductController extends Controller
         //
         $category = (new Category())->tree();
         $data = Product::find($id);
-        return view('erp.product.edit', compact('data', 'category'));
+        $brand = Brand::get();
+        $supplier = Supplier::get();
+        return view('erp.product.edit', compact('data', 'category','brand','supplier'));
     }
 
     /**
@@ -203,18 +221,20 @@ class ProductController extends Controller
         $result->brand_id = $request->brand_id;
         $result->product_spu = $request->product_spu;
         $result->product_barcode = $request->product_barcode;
-        $result->product_costprice = $request->product_costprice;
+        $result->product_cost_price = $request->product_cost_price;
         $result->product_price = $request->product_price;
         $result->product_freight = $request->product_freight;
         $result->product_size = $request->product_size;
         $result->product_weight = $request->product_weight;
         $result->product_image = $request->product_image;
         $result->product_content = $request->product_content;
-        $result->supllier_id = $request->supllier_id;
-        $result->supllier_bakid = $request->supllier_bakid;
+        $result->supplier_id = $request->supplier_id;
+        $result->supplier_bid = $request->supplier_bid;
+        $result->supplier_url = $request->supplier_url;
+        $result->supplier_burl = $request->supplier_burl;
         $result->product_commend = $request->product_commend;
         $result->product_state = $request->product_state;
-        $result->updated_at = date('Y-m-d H:i:s', time());
+        //$result->updated_at = date('Y-m-d H:i:s', time());
         return $result->save() ? '0' : '1';
     }
 

@@ -49,6 +49,7 @@
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
                     ,{field: 'category_name', title: '分类名称', width:180}
+                    ,{field: 'category_code', title: '分类编码', width:100}
                     ,{field: 'parent_id', title: '父级ID', width:80, sort: true}
                     ,{field: 'type_id', title: '类别ID', width:80}
                     ,{field: 'type_name', title: '类别名称', width: 180}

@@ -95,6 +95,7 @@ class AttributeController extends Controller
             if(in_array($value->id,$request->attr_value_ids)){
                 $attr_value[$key]['attr_value_id'] = $value->id;
                 $attr_value[$key]['attr_value_name'] = $value->attr_value_name;
+                $attr_value[$key]['attr_value_code'] = $value->code;
             }
         }
 

@@ -23,6 +23,12 @@ class Category extends Model
 
     }
 
+    public function group(){
+        $category = $this->all();
+        return $category;
+
+    }
+
     //获取分类项
     public function getTree($data,$field_name,$field_id='id',$field_pid='parent_id',$pid='0'){
         $arr = array();
@@ -40,6 +46,8 @@ class Category extends Model
         }
         return $arr;
     }
+
+
 
 
 }

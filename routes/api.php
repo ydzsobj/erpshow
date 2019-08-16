@@ -33,6 +33,8 @@ $api->version('v1', function ($api) {
     $api->resource('/attribute','AttributeController', ['only' => ['index']]);
     $api->resource('/attribute_value','AttributeValueController', ['only' => ['index']]);
     $api->resource('/brand','BrandController', ['only' => ['index']]);
+    $api->resource('/supplier','SupplierController', ['only' => ['index']]);
+    $api->resource('/salesman','SalesmanController', ['only' => ['index']]);
 
 
     $api->get('/product/sku/{id}','ProductController@sku');

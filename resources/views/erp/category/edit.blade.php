@@ -32,6 +32,12 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">分类编码</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" name="category_code" value="0" autocomplete="off" class="layui-input" maxlength="2">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">排序</label>
                 <div class="layui-input-inline" style="width: 50px;">
                     <input type="text" name="sort" value="0" autocomplete="off" class="layui-input">
@@ -62,6 +68,7 @@
             form.val('formData', {
                 "category_name": "{{$data->category_name}}"
                 ,"parent_id": "{{$data->parent_id}}"
+                ,"category_code": "{{$data->category_code}}"
                 ,"sort": "{{$data->sort}}"
 
             });

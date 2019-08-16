@@ -3,7 +3,7 @@
     <div class="layui-fluid">
         <div class="layui-card">
             <div class="layui-card-header layuiadmin-card-header-auto">
-                <button class="layui-btn layuiadmin-btn-tags" data-type="add" onclick="category_show('添加属性值','{{url("admins/attribute_value/create")}}',2,'500px','400px');">添加属性值</button>
+                <button class="layui-btn layuiadmin-btn-tags" data-type="add" onclick="category_show('添加销售人员','{{url("admins/salesman/create")}}',2,'500px','600px');">添加销售人员</button>
             </div>
             <div class="layui-card-body">
                 <table id="LAY-app-content-tags" lay-filter="LAY-app-content-tags"></table>
@@ -21,8 +21,9 @@
             </div>
             <button class="layui-btn" data-type="reload">搜索</button>
         </div>
-        <table id="category_list" lay-filter="list"></table>
+        <table id="data_list" lay-filter="list"></table>
     </div>
+    <img src="" id="show_big" width="100%" style="display: none">
     <script type="text/html" id="button" >
         <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">查看</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
@@ -41,18 +42,17 @@
 
             //渲染实例
             table.render({
-                elem: '#category_list'
+                elem: '#data_list'
                 ,height: 500
-                ,url: "{{url('api/attribute_value')}}" //数据接口
+                ,url: "{{url('api/salesman')}}" //数据接口
                 ,id: 'listReload'
                 ,page: true //开启分页
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-                    ,{field: 'attr_value_name', title: '属性值名称', width:180}
-                    ,{field: 'attr_value_english', title: '英文名称', width:180}
-                    ,{field: 'attr_id', title: '属性ID', width:120, sort: true}
-                    ,{field: 'code', title: '属性值编码', width: 100}
-                    ,{field: 'attr_value_show', title: '属性值展示', width: 100}
+                    ,{field: 'username', title: '姓名', width:180}
+                    ,{field: 'phone', title: '电话', width:180}
+                    ,{field: 'address', title: '地址',  width:180}
+                    ,{field: 'area', title: '地区',  width:180}
                     ,{field: 'button', title: '操作', toolbar:'#button'}
                 ]]
             });
@@ -117,14 +117,14 @@
                         area:['350px','420px'],
                         fixed:false,
                         maxmin:true,
-                        content:"{{url('admins/attribute_value/')}}/"+data.id
+                        content:"{{url('admins/salesman/')}}/"+data.id
                     });
                     //layer.msg('ID：'+ data.id + ' 的查看操作');
                 } else if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
 
                         $.ajax({
-                            url:"{{url('admins/attribute_value/')}}/"+data.id,
+                            url:"{{url('admins/salesman/')}}/"+data.id,
                             type:'delete',
                             data:{"_token":"{{csrf_token()}}"},
                             datatype:'json',
@@ -153,9 +153,24 @@
                         area:['500px','400px'],
                         fixed:false,
                         maxmin:true,
-                        content:"{{url('admins/attribute_value/')}}/"+data.id+"/edit"
+                        content:"{{url('admins/salesman/')}}/"+data.id+"/edit"
                     });
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                }else if(obj.event === 'show_img'){
+                    $('#show_big').attr('src',data.brand_pic);
+                    //console.log($('#show_big').attr('url'));
+                    layer.open({
+                        type:1,
+                        title: false,
+                        scrollbar: false,
+                        closeBtn: 0,
+                        //content: ['浏览器滚动条已锁','no'],
+                        shadeClose: true,
+                        area:'600px',
+                        skin: 'layui-layer-nobg', //没有背景色
+                        shadeClose: true,
+                        content:$('#show_big')
+                    })
                 }
             });
 

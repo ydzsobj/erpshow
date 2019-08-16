@@ -4,7 +4,7 @@
         <form class="layui-form" action=""  lay-filter="formData">
             {{csrf_field()}}
             <div class="layui-form-item">
-                <label class="layui-form-label">属性名称</label>
+                <label class="layui-form-label">属性值名称</label>
                 <div class="layui-input-inline">
                     <input type="text" name="attr_value_name" lay-verify="required" lay-reqtext="属性值不能为空"
                            placeholder="请输入属性名称" autocomplete="off" class="layui-input">
@@ -18,13 +18,21 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">属性名称</label>
+                <label class="layui-form-label">属性分类</label>
                 <div class="layui-input-inline">
                     <select name="attr_id">
                         @foreach($attribute as $value)
-                            <option value="{{$value->id}}" @if($value->id==$data->id) selected @endif>{{$value->attr_name}}</option>
+                            <option value="{{$value->id}}" @if($value->id==$data->attr_id) selected @endif>{{$value->attr_name}}</option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">属性值编码</label>
+                <div class="layui-input-inline">
+                    <div class="layui-col-md12">
+                        <input type="text" name="code" autocomplete="off" class="layui-input" maxlength="2">
+                    </div>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -60,7 +68,7 @@
             form.val('formData', {
                 "attr_value_name": "{{$data->attr_value_name}}"
                 ,"attr_value_english": "{{$data->attr_value_english}}"
-
+                ,"code": "{{$data->code}}"
                 ,"attr_value_show" : "{{$data->attr_value_show==1 ? 'on' : ''}}"
 
             });

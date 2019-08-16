@@ -46,6 +46,7 @@ class AttributeValueController extends Controller
             'attr_value_name'=>$request->attr_value_name,
             'attr_value_english'=>$request->attr_value_english,
             'attr_id'=>$request->attr_id,
+            'code'=>$request->code,
             'attr_value_show'=>$request->attr_value_show,
             'created_at' => date('Y-m-d H:i:s', time()),
         ]);
@@ -103,6 +104,7 @@ class AttributeValueController extends Controller
         $result->attr_value_name = $request->attr_value_name;
         $result->attr_value_english = $request->attr_value_english;
         $result->attr_id = $request->attr_id;
+        $result->code = $request->code;
         $result->attr_value_show = $request->attr_value_show;
         $result->updated_at = date('Y-m-d H:i:s', time());
         return $result->save()?'0':'1';

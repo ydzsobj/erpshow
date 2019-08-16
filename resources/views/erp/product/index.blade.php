@@ -49,10 +49,10 @@
                 ,page: true //开启分页
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-                    ,{field: 'product_spu', title: '产品SPU', width: 180}
+                    ,{field: 'product_spu', title: '产品SPU', width: 100}
                     ,{field: 'product_name', title: '产品名称', width:180}
-                    ,{field: 'category_id', title: '产品类别', width:80, sort: true}
-                    ,{field: 'product_price', title: '销售价', width:80}
+                    ,{field: 'category_id', title: '产品类别', width:100, sort: true}
+                    ,{field: 'product_price', title: '销售价', width:100}
                     ,{field: 'product_image', title: '产品图片', event: 'show_img', align:'center',templet: function(res){
                         return '<img src="'+ res.product_image +'"width="50px"  alt="">'
                     }}

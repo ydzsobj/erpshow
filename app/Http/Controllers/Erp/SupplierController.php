@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Erp;
 
-use App\Models\Category;
-use App\Models\Type;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CategoryController extends Controller
+class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         //首页列表
-        return view('erp.category.index');
+        return view('erp.supplier.index');
     }
 
     /**
@@ -28,9 +27,7 @@ class CategoryController extends Controller
     public function create()
     {
         //创建操作
-        $category = (new Category())->tree();
-        $type = Type::get();
-        return view('erp.category.create',compact('category','type'));
+        return view('erp.supplier.create');
     }
 
     /**
@@ -42,13 +39,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //存储表单信息
-        $result = Category::insert([
-            'category_name'=>$request->category_name,
-            'parent_id'=>$request->parent_id,
-            'category_code'=>$request->category_code,
-            'type_id'=>$request->type_id,
-            'type_name'=>$request->type_id==0?'':Type::find($request->type_id)->type_name,
-            'sort'=>$request->sort
+        $result = Supplier::insert([
+            'supplier_name'=>$request->supplier_name,
+            'supplier_url'=>$request->supplier_url,
+            'supplier_address'=>$request->supplier_address,
+            'supplier_person'=>$request->supplier_person,
+            'supplier_phone'=>$request->supplier_phone,
+            'supplier_text'=>$request->supplier_text,
+            'show'=>$request->show,
+            'sort'=>$request->sort,
+            'created_at' => date('Y-m-d H:i:s', time()),
         ]);
         return $result ? '0' : '1';
     }
@@ -61,9 +61,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //展示操作
-        $data = Category::find($id);
-        return view('erp.category.show',compact('data'));
+        //
     }
 
     /**
@@ -74,11 +72,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //编辑操作
-        $category = (new Category())->tree();
-        $data = Category::find($id);
-        $type = Type::get();
-        return view('erp.category.edit',compact('data','category','type'));
+        //
+        $data = Supplier::find($id);
+        return view('erp.Supplier.edit',compact('data'));
     }
 
     /**
@@ -91,12 +87,14 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //更新操作
-        $result = Category::find($id);
-        $result->category_name = $request->category_name;
-        $result->parent_id = $request->parent_id;
-        $result->category_code = $request->category_code;
-        $result->type_id = $request->type_id;
-        $result->type_name = $request->type_id==0?'':Type::find($request->type_id)->type_name;
+        $result = Supplier::find($id);
+        $result->supplier_name = $request->supplier_name;
+        $result->supplier_url = $request->supplier_url;
+        $result->supplier_address = $request->supplier_address;
+        $result->supplier_person = $request->supplier_person;
+        $result->supplier_phone = $request->supplier_phone;
+        $result->supplier_text = $request->supplier_text;
+        $result->show = $request->show;
         $result->sort = $request->sort;
         return $result->save()?'0':'1';
     }
@@ -109,8 +107,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //删除操作
-        $result = Category::find($id);
-        return $result->delete()?'0':'1';
+        //
     }
 }

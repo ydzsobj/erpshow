@@ -89,7 +89,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd data-name="console">
-                        <a lay-href="{{url('/admins/product')}}">供应商列表</a>
+                        <a lay-href="{{url('/admins/supplier')}}">供应商列表</a>
                     </dd>
 
                 </dl>
@@ -132,6 +132,9 @@
                     </dd>
                     <dd data-name="console">
                         <a lay-href="{{url('/admins/product')}}">权限列表</a>
+                    </dd>
+                    <dd data-name="console">
+                        <a lay-href="{{url('/admins/salesman')}}">销售人员</a>
                     </dd>
                 </dl>
             </li>
