@@ -125,7 +125,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd data-name="console">
-                        <a lay-href="{{url('/admins/product')}}">管理员列表</a>
+                        <a lay-href="{{url('/admins/admin')}}">管理员列表</a>
                     </dd>
                     <dd data-name="console">
                         <a lay-href="{{url('/admins/product')}}">角色列表</a>
