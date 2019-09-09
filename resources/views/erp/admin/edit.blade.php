@@ -6,7 +6,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="admin_name" lay-verify="admin_name" lay-reqtext="用户名称不能为空" placeholder="请输入用户名称" autocomplete="off" class="layui-input">
+                    <input type="text" name="admin_name" lay-verify="admin_name" lay-reqtext="用户名称不能为空" disabled placeholder="请输入用户名称" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">显示</label>
+                <label class="layui-form-label">状态</label>
                 <div class="layui-input-inline">
                     <div class="layui-col-md12">
                         <input type="checkbox" name="admin_use" lay-skin="switch" lay-text="ON|OFF" checked>
@@ -74,8 +74,8 @@
                     data.field.admin_use = "0";
                 }
                 $.ajax({
-                    url:"{{url('admins/admin/'.$data->id)}}",
-                    type:'PUT',
+                    url:"{{url('admins/admin/'.$data->admin_id)}}",
+                    type:'put',
                     data:data.field,
                     datatype:'json',
                     success:function (msg) {

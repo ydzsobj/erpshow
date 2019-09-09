@@ -39,6 +39,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->password!=$request->repassword) return '1';
         //存储表单信息
         $result = Admin::insert([
             'admin_name'=>$request->admin_name,
@@ -81,16 +82,17 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        return '0';
+        if($request->password!=$request->repassword) return '1';
         //更新操作
-        $result = Category::find($id);
-        $result->admin_name = $request->admin_name;
-        $result->password = $request->password;
+        $result = Admin::find($id);
+        if($request->password!=''){
+            $result->password = bcrypt($request->password);
+        }
         if($request->admin_realname!=''){
             $result->admin_realname = $request->admin_realname;
         }
         $result->admin_use = $request->admin_use;
+        $result->is_root = $request->admin_use;
         return $result->save()?'0':'1';
     }
 

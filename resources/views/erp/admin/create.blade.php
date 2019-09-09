@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">显示</label>
+                <label class="layui-form-label">状态</label>
                 <div class="layui-input-inline">
                     <div class="layui-col-md12">
                         <input type="checkbox" name="admin_use" lay-skin="switch" lay-text="ON|OFF" checked>
