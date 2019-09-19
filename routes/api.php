@@ -35,6 +35,8 @@ $api->version('v1', function ($api) {
     $api->resource('/brand','BrandController', ['only' => ['index']]);
     $api->resource('/supplier','SupplierController', ['only' => ['index']]);
     $api->resource('/salesman','SalesmanController', ['only' => ['index']]);
+    $api->resource('/storage','StorageController', ['only' => ['index']]);
+    $api->resource('/order','OrderController', ['only' => ['index']]);
 
 
     $api->get('/product/sku/{id}','ProductController@sku');

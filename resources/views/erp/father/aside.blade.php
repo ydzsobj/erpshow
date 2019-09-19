@@ -65,7 +65,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd data-name="console">
-                        <a lay-href="{{url('/admins/product')}}">仓库列表</a>
+                        <a lay-href="{{url('/admins/storage')}}">仓库列表</a>
                     </dd>
 
                 </dl>

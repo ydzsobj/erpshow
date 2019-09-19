@@ -29,6 +29,9 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
     Route::get('admin_info','IndexController@adminInfo');
     Route::any('password','IndexController@password');
     Route::get('jsq','IndexController@jsq');
+    Route::get('product/export', 'ProductController@export');
+
+
     Route::resource('admin','AdminController');
     Route::resource('category','CategoryController');
     Route::resource('product','ProductController');
@@ -39,10 +42,11 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
     Route::resource('brand','BrandController');
     Route::resource('supplier','SupplierController');
     Route::resource('salesman','SalesmanController');
+    Route::resource('storage','StorageController');
+    Route::resource('order','OrderController');
+
 
     Route::get('data/get_admin','DataController@get_admin');
-
-
     Route::post('uploader/pic_upload','UploaderController@picUpload');  //图片异步上传
 
 

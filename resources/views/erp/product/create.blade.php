@@ -143,6 +143,7 @@
                         <div class="layui-form-item @{{i.attr_english}}">
                             <label class="layui-form-label">@{{i.attr_name}}</label>
                             <input type="hidden" name="sp_val[@{{i.id}}][attr_name]" value="@{{i.attr_name}}"/>
+                            <input type="hidden" name="sp_val[@{{i.id}}][attr_english]" value="@{{i.attr_english}}"/>
                             <div class="layui-input-block"  >
                                 @{{#  layui.each(i.attrValue, function(index_1, item){ }}
                                 <input type="checkbox" name="sp_val[@{{i.id}}][attr_value][@{{ item.attr_value_id }}]" value="@{{ item.attr_value_name }}" attr_code="@{{item.attr_value_code}}" attr_id="@{{i.id}}" value_id="@{{ item.attr_value_id }}" img_id="@{{item.attr_value_id}}" attr-id="@{{index}}" lay-filter="@{{i.attr_english}}" title="@{{ item.attr_value_name }}" lay-skin="primary" >

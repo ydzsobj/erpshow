@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Erp;
 
+use App\Exports\ProductExport;
+use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductGoods;
 use App\Models\ProductImages;
 use App\Models\Supplier;
-use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -52,6 +54,9 @@ class ProductController extends Controller
             foreach ($request->sp_val as $key=>$value){
                 $spec_value[$key]['attr_id'] = $key;
                 $spec_value[$key]['attr_name'] = $value['attr_name'];
+                $spec_value[$key]['attr_english'] = $value['attr_english'];
+                $tmp_array = AttributeValue::where('attr_id',$key)->get(['id','attr_value_english'])->toArray();
+                $attr_array=array_column($tmp_array,'attr_value_english','id');
                 foreach ($value['attr_value'] as $k=>$v){
                     if($key==1){
                         $spec_color[$k]['color_id'] = $k;
@@ -62,6 +67,7 @@ class ProductController extends Controller
 
                     $spec_value[$key]['attr_value'][$k]['attr_value_id'] = $k;
                     $spec_value[$key]['attr_value'][$k]['attr_value_name'] = $v;
+                    $spec_value[$key]['attr_value'][$k]['attr_value_english'] = $attr_array[$k];
                 }
             }
         }else{
@@ -248,4 +254,19 @@ class ProductController extends Controller
     {
         //
     }
+
+
+    public function export()
+    {
+        $data = Product::all(['id','product_name','product_english','product_spu']);
+        $headings = [
+            '产品ID',
+            '产品名称',
+            '产品英文名称',
+            '产品spu'
+        ];
+        return Excel::download(new ProductExport($data,$headings),'产品列表'.date('Y-m-d H_i_s').'.xlsx');
+    }
+
+
 }
