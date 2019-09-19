@@ -268,5 +268,13 @@ class ProductController extends Controller
         return Excel::download(new ProductExport($data,$headings),'产品列表'.date('Y-m-d H_i_s').'.xlsx');
     }
 
+    public function spec_value(Request $request, $id)
+    {
+        $result = Product::find($id)->first('');
+    }
+
+
+
+
 
 }
