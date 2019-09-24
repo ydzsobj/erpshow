@@ -7,27 +7,16 @@
                 <form class="layui-form layui-form-pane" action="" lay-filter="formData">
                     {{csrf_field()}}
                     <div class="layui-form-item">
-                        <label class="layui-form-label">分类名称</label>
-                        <div class="layui-input-inline">
-                            <select name="category_id">
-                                @foreach($category as $value)
-                                    <option value="{{$value->id}}" @if($value->id == $data->category_id) selected @endif>{{$value->category_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <hr class="layui-bg-gray">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">产品名称</label>
+                        <label class="layui-form-label">SKU名称</label>
                         <div class="layui-input-inline" style="width: 600px;">
-                            <input type="text" name="product_name" lay-verify="required" lay-reqtext="产品名称不能为空"
-                                   placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+                            <input type="text" name="sku_name" lay-verify="required" lay-reqtext="SKU名称不能为空"
+                                   placeholder="请输入SKU名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">英文名称</label>
                         <div class="layui-input-inline" style="width: 600px;">
-                            <input type="text" name="product_english" placeholder="请输入英文名称" autocomplete="off"
+                            <input type="text" name="sku_english" placeholder="请输入英文名称" autocomplete="off"
                                    class="layui-input">
                         </div>
                     </div>
@@ -36,53 +25,33 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">成本价</label>
                             <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="product_costprice" placeholder="￥" autocomplete="off" class="layui-input">
+                                <input type="text" name="sku_cost_price" placeholder="￥" autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-form-mid"></div>
                             <label class="layui-form-label">销售价</label>
                             <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="product_price" placeholder="￥" autocomplete="off" class="layui-input">
+                                <input type="text" name="sku_price" placeholder="￥" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
                     <hr class="layui-bg-gray">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">产品货号</label>
+                        <label class="layui-form-label">SKU条形码</label>
                         <div class="layui-input-inline" style="width: 300px;">
-                            <input type="text" name="product_spu" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">产品条形码</label>
-                        <div class="layui-input-inline" style="width: 300px;">
-                            <input type="text" name="product_barcode" autocomplete="off" class="layui-input">
+                            <input type="text" name="sku_barcode" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <hr class="layui-bg-gray">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">产品尺寸</label>
+                            <label class="layui-form-label">库存数量</label>
                             <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="product_size" autocomplete="off" class="layui-input">
+                                <input type="text" name="sku_num" autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-form-mid"></div>
-                            <label class="layui-form-label">重量或体积</label>
+                            <label class="layui-form-label">库存报警值</label>
                             <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="product_weight" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="layui-bg-gray">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">主供应商</label>
-                            <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="supllier_id" autocomplete="off" class="layui-input">
-                            </div>
-                            <div class="layui-form-mid"></div>
-                            <label class="layui-form-label">辅供应商</label>
-                            <div class="layui-input-inline" style="width: 150px;">
-                                <input type="text" name="supllier_bakid" autocomplete="off" class="layui-input">
+                                <input type="text" name="sku_num_alarm" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -93,28 +62,16 @@
                             <div class="layui-upload">
                                 <button type="button" class="layui-btn" id="picUpload">上传图片</button>
                                 <div class="layui-upload-list">
-                                    <input type="hidden" name="product_image" autocomplete="off" class="layui-input">
-                                    <img class="layui-upload-img" id="pic" src="{{$data->product_image}}">
+                                    <input type="hidden" name="sku_image" autocomplete="off" class="layui-input">
+                                    <img class="layui-upload-img" id="pic" src="{{$data->sku_image}}">
                                     <p id="picText"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">产品详情</label>
-                        <div class="layui-input-block">
-                            <textarea id="content" name="product_content" style="display: none;">{{$data->product_content}}</textarea>
-                        </div>
-                    </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">产品推荐</label>
-                            <div class="layui-input-inline">
-                                <input type="radio" name="product_commend" value="0" title="否" @if($data->product_commend == '0') checked @endif >
-                                <input type="radio" name="product_commend" value="1" title="是" @if($data->product_commend == '1') checked @endif>
-                            </div>
-                            <div class="layui-form-mid"></div>
-                            <label class="layui-form-label">产品状态</label>
+                            <label class="layui-form-label">SKU状态</label>
                             <div class="layui-input-inline">
                                 <input type="radio" name="product_state" value="0" title="下架" @if($data->product_state == '0') checked @endif>
                                 <input type="radio" name="product_state" value="1" title="正常"  @if($data->product_state == '1') checked @endif>
@@ -191,18 +148,14 @@
 
                     //表单初始赋值
                     form.val('formData', {
-                        "product_name": "{{$data->product_name}}"
-                        ,"product_english": "{{$data->product_english}}"
-                        ,"product_costprice": "{{$data->product_costprice}}"
-                        ,"product_price": "{{$data->product_price}}"
-                        ,"brand_id": "{{$data->brand_id}}"
-                        ,"product_spu": "{{$data->product_spu}}"
-                        ,"product_barcode": "{{$data->product_barcode}}"
-                        ,"product_size": "{{$data->product_size}}"
-                        ,"product_weight": "{{$data->product_weight}}"
-                        ,"product_image": "{{$data->product_image}}"
-                        ,"supllier_id": "{{$data->supllier_id}}"
-                        ,"supllier_bakid": "{{$data->supllier_bakid}}"
+                        "sku_name": "{{$data->sku_name}}"
+                        ,"sku_english": "{{$data->sku_english}}"
+                        ,"sku_cost_price": "{{$data->sku_cost_price}}"
+                        ,"sku_price": "{{$data->sku_price}}"
+                        ,"sku_barcode": "{{$data->sku_barcode}}"
+                        ,"sku_num": "{{$data->sku_num}}"
+                        ,"sku_num_alarm": "{{$data->sku_num_alarm}}"
+                        ,"sku_image": "{{$data->sku_image}}"
 
                     });
 

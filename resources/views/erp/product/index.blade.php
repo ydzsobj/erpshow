@@ -21,7 +21,7 @@
             </div>
             <button class="layui-btn" data-type="reload">搜索</button>
         </div>
-        <table id="product_list" lay-filter="list"></table>
+        <table id="list" lay-filter="list"></table>
     </div>
     <img src="" id="show_big" width="100%" style="display: none">
     <script type="text/html" id="button" >
@@ -42,10 +42,16 @@
 
             //渲染实例
             table.render({
-                elem: '#product_list'
+                elem: '#list'
                 ,height: 500
                 ,url: "{{url('api/product')}}" //数据接口
                 ,id: 'listReload'
+                ,toolbar: '#toolbar'
+                ,defaultToolbar: ['filter', 'exports', 'print']
+                ,title: '产品数据表'
+                ,count: 10000
+                ,limit: 10
+                ,limits: [10,20,30,50,100,300,500,1000,2000,5000,10000]
                 ,page: true //开启分页
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}

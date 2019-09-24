@@ -35,7 +35,7 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
     Route::resource('admin','AdminController');
     Route::resource('category','CategoryController');
     Route::resource('product','ProductController');
-    Route::resource('product_goods','ProductGoodsController');
+    Route::resource('product_goods','ProductGoodsController')->only('index','edit','show','update');
     Route::resource('type','TypeController');
     Route::resource('attribute','AttributeController');
     Route::resource('attribute_value','AttributeValueController');
