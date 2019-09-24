@@ -80,9 +80,9 @@
         </div>
         <hr class="layui-bg-gray">
         <div class="layui-form-item">
-            <label class="layui-form-label">产品条形码:</label>
+            <label class="layui-form-label">规格数值:</label>
             <div class="layui-input-block">
-                <div class="layui-form-mid layui-word-aux">{{$data->product_barcode}}</div>
+                <div class="layui-form-mid layui-word-aux">{{$data->spec_value}}</div>
             </div>
         </div>
         <hr class="layui-bg-gray">
