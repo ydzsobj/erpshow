@@ -241,7 +241,6 @@ class ProductController extends Controller
         $result->supplier_burl = $request->supplier_burl;
         $result->product_commend = $request->product_commend;
         $result->product_state = $request->product_state;
-        //$result->updated_at = date('Y-m-d H:i:s', time());
         return $result->save() ? '0' : '1';
     }
 
@@ -267,8 +266,8 @@ class ProductController extends Controller
 
     public function sku_edit($id)
     {
-        $result = Product::find($id);
-        dump($result);
+        $data = Product::find($id);
+        return view('erp.product.sku_edit',compact('data'));
     }
 
 

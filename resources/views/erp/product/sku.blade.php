@@ -1,13 +1,6 @@
 @extends('erp.father.father')
 @section('content')
     <div class="layui-fluid">
-        <div class="demoTable">
-            搜索ID或名称：
-            <div class="layui-inline">
-                <input class="layui-input" name="id" id="searchReload" autocomplete="off">
-            </div>
-            <button class="layui-btn" data-type="reload">搜索</button>
-        </div>
         <table id="list" lay-filter="list"></table>
     </div>
     <img src="" id="show_big" width="100%" style="display: none">
@@ -39,7 +32,7 @@
                 ,title: '产品数据表'
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-                    ,{field: 'sku_id', title: 'SKU', width: 100}
+                    ,{field: 'sku_id', title: 'SKU', width: 130}
                     ,{field: 'sku_name', title: 'SKU名称', width:180}
                     ,{field: 'sku_english', title: '英文名称', width:100, sort: true}
                     ,{field: 'sku_price', title: '销售价', width:100}
