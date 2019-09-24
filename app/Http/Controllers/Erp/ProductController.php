@@ -257,6 +257,21 @@ class ProductController extends Controller
     }
 
 
+    public function sku($id)
+    {
+        //$data = ProductGoods::where('product_id',$id)->get();
+        $data['id'] = $id;
+        return view('erp.product.sku',compact('data'));
+    }
+
+
+    public function sku_edit($id)
+    {
+        $result = Product::find($id);
+        dump($result);
+    }
+
+
     public function export()
     {
         $data = Product::all(['id','product_name','product_english','product_spu']);
@@ -269,10 +284,7 @@ class ProductController extends Controller
         return Excel::download(new ProductExport($data,$headings),'产品列表'.date('Y-m-d H_i_s').'.xlsx');
     }
 
-    public function spec_value(Request $request, $id)
-    {
-        $result = Product::find($id)->first('');
-    }
+
 
 
 

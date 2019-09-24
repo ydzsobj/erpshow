@@ -73,8 +73,8 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">SKU状态</label>
                             <div class="layui-input-inline">
-                                <input type="radio" name="product_state" value="0" title="下架" @if($data->product_state == '0') checked @endif>
-                                <input type="radio" name="product_state" value="1" title="正常"  @if($data->product_state == '1') checked @endif>
+                                <input type="radio" name="sku_state" value="0" title="下架" @if($data->sku_state == '0') checked @endif>
+                                <input type="radio" name="sku_state" value="1" title="正常"  @if($data->sku_state == '1') checked @endif>
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                             if (res.code > 0) {  //如果上传失败
                                 return layer.msg('上传失败');
                             }else{   //上传成功
-                                $('input[name=product_image]').val(res.path);
+                                $('input[name=sku_image]').val(res.path);
                             }
 
                         }
@@ -163,7 +163,7 @@
                     form.on('submit(form)', function (data) {
                         //layer.msg(JSON.stringify(data.field));
                         $.ajax({
-                            url: "{{url('admins/product/'.$data->id)}}",
+                            url: "{{url('admins/product_goods/'.$data->id)}}",
                             type: 'put',
                             data: data.field,
                             datatype: 'json',

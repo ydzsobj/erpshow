@@ -1,19 +1,6 @@
 @extends('erp.father.father')
 @section('content')
     <div class="layui-fluid">
-        <div class="layui-card">
-            <div class="layui-card-header layuiadmin-card-header-auto">
-                <button class="layui-btn layuiadmin-btn-tags" data-type="add" onclick="show('添加产品信息','{{url("admins/product/create")}}',2,'100%','100%');">添加产品</button>
-            </div>
-            <div class="layui-card-body">
-                <table id="LAY-app-content-tags" lay-filter="LAY-app-content-tags"></table>
-                <script type="text/html" id="layuiadmin-app-cont-tagsbar">
-                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
-                </script>
-            </div>
-
-        </div>
         <div class="demoTable">
             搜索ID或名称：
             <div class="layui-inline">
@@ -45,26 +32,19 @@
             table.render({
                 elem: '#list'
                 ,height: 500
-                ,url: "{{url('api/product')}}" //数据接口
+                ,url: "{{url('api/product/sku')}}/{{$data['id']}} "   //数据接口
                 ,id: 'listReload'
                 ,toolbar: '#toolbar'
                 ,defaultToolbar: ['filter', 'exports', 'print']
                 ,title: '产品数据表'
-                ,count: 10000
-                ,limit: 10
-                ,limits: [10,20,30,50,100,300,500,1000,2000,5000,10000]
-                ,page: true //开启分页
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-                    ,{field: 'product_spu', title: '产品SPU', width: 100}
-                    ,{field: 'product_name', title: '产品名称', width:180}
-                    ,{field: 'category_id', title: '产品类别', width:100, sort: true}
-                    ,{field: 'product_price', title: '销售价', width:100}
-                    ,{field: 'product_image', title: '产品图片', event: 'show_img', align:'center',templet: function(res){
-                        return '<img src="'+ res.product_image +'"width="50px"  alt="">'
-                    }}
-                    ,{field:'text', title: 'SKU列表',event: 'show_sku',align:'center', templet: function(res){
-                        return '<span class="layui-btn layui-btn-radius layui-btn-xs layui-btn-primary"  style="background-color:#ccc;color:green;">查看</span>'
+                    ,{field: 'sku_id', title: 'SKU', width: 100}
+                    ,{field: 'sku_name', title: 'SKU名称', width:180}
+                    ,{field: 'sku_english', title: '英文名称', width:100, sort: true}
+                    ,{field: 'sku_price', title: '销售价', width:100}
+                    ,{field: 'sku_image', title: '产品图片', event: 'show_img', align:'center',templet: function(res){
+                        return '<img src="'+ res.sku_image +'"width="50px"  alt="">'
                     }}
                     ,{field: 'created_at', title: '发布时间', width: 180, sort: true}
                     ,{field: 'button', title: '操作', toolbar:'#button'}
@@ -167,7 +147,7 @@
                         area:['100%','100%'],
                         fixed:false,
                         maxmin:true,
-                        content:"{{url('admins/product/')}}/"+data.id+"/edit"
+                        content:"{{url('admins/product_goods/')}}/"+data.id+"/edit"
                     });
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
                 }else if(obj.event === 'sku_edit'){
@@ -181,17 +161,8 @@
                         content:"{{url('admins/product/sku_edit')}}/"+data.id
                     });
                     //layer.alert('编辑行：<br>'+ JSON.stringify(data))
-                }else if(obj.event === 'show_sku'){
-                    layer.open({
-                        type: 2,
-                        title: 'sku列表',
-                        area: ['800px', '600px'],
-                        fixed: false, //不固定
-                        maxmin: true,
-                        content: "{{url('admins/product/sku')}}/"+data.id
-                    });
                 }else if(obj.event === 'show_img'){
-                    $('#show_big').attr('src',data.product_image);
+                    $('#show_big').attr('src',data.sku_image);
                     //console.log($('#show_big').attr('url'));
                     layer.open({
                         type:1,

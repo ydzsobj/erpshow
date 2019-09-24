@@ -73,7 +73,18 @@ class ProductGoodsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //更新操作
+        $result = ProductGoods::find($id);
+        $result->sku_name = $request->sku_name;
+        $result->sku_english = $request->sku_english;
+        $result->sku_num = $request->sku_num;
+        $result->sku_num_alarm = $request->sku_num_alarm;
+        $result->sku_image = $request->sku_image;
+        $result->sku_barcode = $request->sku_barcode;
+        $result->sku_cost_price = $request->sku_cost_price;
+        $result->sku_price = $request->sku_price;
+        $result->sku_state = $request->sku_state;
+        return $result->save() ? '0' : '1';
     }
 
     /**

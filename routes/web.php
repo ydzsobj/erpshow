@@ -30,6 +30,8 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
     Route::any('password','IndexController@password');
     Route::get('jsq','IndexController@jsq');
     Route::get('product/export', 'ProductController@export');
+    Route::get('product/sku/{id}', 'ProductController@sku')->name('product.sku');
+    Route::get('product/sku_edit/{id}', 'ProductController@sku_edit')->name('product.sku_edit');
 
 
     Route::resource('admin','AdminController');
