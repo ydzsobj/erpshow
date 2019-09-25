@@ -134,7 +134,7 @@
                             <div class="layui-upload">
                                 <div class="layui-upload-list">
                                     <!-- <p id="demoText">123</p> -->
-                                    <input type="hidden" name_id="color_image{{$value['id']}}" name="color_image[{{$value['id']}}]" autocomplete="off" class="layui-input" value="{{$value['product_color_image']}}">
+                                    <input type="hidden" name="color_image[{{$value['id']}}]" autocomplete="off" class="layui-input" value="{{$value['product_color_image']}}">
                                     <img class="layui-upload-img" id="pic{{$value['id']}}" src="{{$value['product_color_image']}}" style="width: 100px; height: 100px; margin: 10px 10px;">
                                 </div>
                                 <button type="button" class="layui-btn imgUpload" attr_id="{{$value['id']}}" id="imgUpload{{$value['id']}}">上传图片</button>
@@ -246,6 +246,38 @@
 
                     layedit.build('content'); //建立编辑器
 
+                    function addimg(id){
+
+                        //颜色多个图片上传
+                        var uploadInst = upload.render({
+                            elem: '#imgUpload'+id
+                            , url: '{{url('admins/uploader/pic_upload')}}'
+                            , data: {"_token": myToken}
+                            , before: function (obj) {
+                                //预读本地文件示例，不支持ie8
+                                obj.preview(function (index, file, result) {
+                                    $('#pic'+id).attr('src', result); //图片链接（base64）
+                                });
+                            }
+                            , done: function (res) {
+                                if (res.code > 0) {  //如果上传失败
+                                    return layer.msg('上传失败');
+                                } else {   //上传成功
+                                    $('input[name=color_image'+id+']').val(res.path);
+                                    //$('input[name=color_image['+id+']]').val(res.path);
+                                }
+
+                            }
+                            , error: function () {
+                                //演示失败状态，并实现重传
+                                var picText = $('#picText');
+                                picText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs pic-reload">重试</a>');
+                                picText.find('.pic-reload').on('click', function () {
+                                    uploadInst.upload();
+                                });
+                            }
+                        });
+                    }
 
                     function add(elem){
                         var id = $(elem).attr('attr_id');console.log(id);
@@ -264,7 +296,8 @@
                                 if(res.code > 0){
                                     return layer.msg('上传失败');
                                 }else {   //上传成功
-                                    $('input[name_id=color_image'+id+']').val(res.path);
+                                    $('input[name=color_image'+id+']').val(res.path);
+                                    //$('input[name=color_image['+id+']]').val(res.path);
                                 }
                             }
                             ,error: function(){

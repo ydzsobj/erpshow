@@ -4,12 +4,7 @@
         <table id="list" lay-filter="list"></table>
     </div>
     <img src="" id="show_big" width="100%" style="display: none">
-    <script type="text/html" id="button" >
-        <a class="layui-btn layui-btn-xs" lay-event="sku_edit">SKU编辑</a>
-        <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
+
 
 
 @endsection
@@ -39,8 +34,7 @@
                     ,{field: 'sku_image', title: '产品图片', event: 'show_img', align:'center',templet: function(res){
                         return '<img src="'+ res.sku_image +'"width="50px"  alt="">'
                     }}
-                    ,{field: 'created_at', title: '发布时间', width: 180, sort: true}
-                    ,{field: 'button', title: '操作', toolbar:'#button'}
+
                 ]]
             });
 

@@ -203,11 +203,12 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
+        $img = ProductImages::where('product_id',$id)->get();
         $category = (new Category())->tree();
         $data = Product::find($id);
         $brand = Brand::get();
         $supplier = Supplier::get();
-        return view('erp.product.edit', compact('data', 'category','brand','supplier'));
+        return view('erp.product.edit', compact('data', 'category','brand','supplier','img'));
     }
 
     /**
@@ -241,6 +242,13 @@ class ProductController extends Controller
         $result->supplier_burl = $request->supplier_burl;
         $result->product_commend = $request->product_commend;
         $result->product_state = $request->product_state;
+
+        //更新颜色图片
+        $color_image = $request->color_image;
+        foreach($color_image as $k=>$v){
+            DB::table('product_images')->where('id', $k)->update(['product_color_image' => $v]);
+        }
+
         return $result->save() ? '0' : '1';
     }
 
