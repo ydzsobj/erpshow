@@ -279,13 +279,7 @@
                     }
 
 
-                    // $(function(){
-                    //     //console.log($('.imgUpload'))
-                    //     $('.imgUpload').each(function(i,elem){ add(elem)})
-                    // })
-                    $('.imgUpload').click(function(elem){
-                        add(elem.currentTarget)
-                    });
+                    $('.imgUpload').each(function(i,elem){ add(elem)})
 
 
                     //表单初始赋值
