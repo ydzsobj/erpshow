@@ -46,6 +46,7 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
     Route::resource('salesman','SalesmanController');
     Route::resource('storage','StorageController');
     Route::resource('order','OrderController');
+    Route::resource('product_unit','ProductUnitController');
 
 
     Route::get('data/get_admin','DataController@get_admin');

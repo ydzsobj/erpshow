@@ -37,6 +37,7 @@ $api->version('v1', function ($api) {
     $api->resource('/salesman','SalesmanController', ['only' => ['index']]);
     $api->resource('/storage','StorageController', ['only' => ['index']]);
     $api->resource('/order','OrderController', ['only' => ['index']]);
+    $api->resource('/product_unit','ProductUnitController', ['only' => ['index']]);
 
 
     $api->get('/product/sku/{id}','ProductController@sku');

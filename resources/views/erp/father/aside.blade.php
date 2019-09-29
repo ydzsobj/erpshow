@@ -44,6 +44,9 @@
                     <dd data-name="console">
                         <a lay-href="{{url('/admins/product_goods')}}">产品SKU</a>
                     </dd>
+                    <dd data-name="console">
+                        <a lay-href="{{url('/admins/product_unit')}}">计量单位</a>
+                    </dd>
                 </dl>
             </li>
             <li data-name="home" class="layui-nav-item ">

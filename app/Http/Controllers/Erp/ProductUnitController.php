@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Erp;
 
-use App\Models\Brand;
+use App\Models\ProductUnit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BrandController extends Controller
+class ProductUnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class BrandController extends Controller
     public function index()
     {
         //首页列表
-        return view('erp.brand.index');
+        return view('erp.product_unit.index');
     }
 
     /**
@@ -27,7 +27,7 @@ class BrandController extends Controller
     public function create()
     {
         //创建操作
-        return view('erp.brand.create');
+        return view('erp.product_unit.create');
     }
 
     /**
@@ -39,12 +39,10 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         //存储表单信息
-        $result = Brand::insert([
-            'brand_name'=>$request->brand_name,
-            'brand_title'=>$request->brand_title,
-            'brand_pic'=>$request->brand_pic,
-            'show'=>$request->show,
-            'sort'=>$request->sort,
+        $result = ProductUnit::insert([
+            'unit_name'=>$request->unit_name,
+            'unit_code'=>$request->unit_code,
+            'status'=>$request->status,
             'created_at' => date('Y-m-d H:i:s', time()),
         ]);
         return $result ? '0' : '1';
@@ -59,8 +57,8 @@ class BrandController extends Controller
     public function show($id)
     {
         //展示操作
-        $data = Brand::find($id);
-        return view('erp.brand.show',compact('data'));
+        $data = ProductUnit::find($id);
+        return view('erp.product_unit.show',compact('data'));
     }
 
     /**
@@ -72,8 +70,8 @@ class BrandController extends Controller
     public function edit($id)
     {
         //修改操作
-        $data = Brand::find($id);
-        return view('erp.brand.edit',compact('data'));
+        $data = ProductUnit::find($id);
+        return view('erp.product_unit.edit',compact('data'));
     }
 
     /**
@@ -86,12 +84,10 @@ class BrandController extends Controller
     public function update(Request $request, $id)
     {
         //更新操作
-        $result = Brand::find($id);
-        $result->brand_name = $request->brand_name;
-        $result->brand_title = $request->brand_title;
-        $result->brand_pic = $request->brand_pic;
-        $result->show = $request->show;
-        $result->sort = $request->sort;
+        $result = ProductUnit::find($id);
+        $result->unit_name = $request->unit_name;
+        $result->unit_code = $request->unit_code;
+        $result->status = $request->status;
         return $result->save()?'0':'1';
     }
 
@@ -103,6 +99,8 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //删除操作
+        $result = ProductUnit::find($id);
+        return $result->delete()?'0':'1';
     }
 }
