@@ -55,8 +55,6 @@ class ProductController extends Controller
                 $spec_value[$key]['attr_id'] = $key;
                 $spec_value[$key]['attr_name'] = $value['attr_name'];
                 $spec_value[$key]['attr_english'] = $value['attr_english'];
-                //$tmp_array = AttributeValue::where('attr_id',$key)->get(['id','attr_value_english'])->toArray();
-                //$attr_array=array_column($tmp_array,'attr_value_english','id');
                 $attr_array = AttributeValue::where('attr_id',$key)->pluck('attr_value_english','id');
                 foreach ($value['attr_value'] as $k=>$v){
                     if($key==1){
