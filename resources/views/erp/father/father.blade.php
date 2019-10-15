@@ -85,7 +85,7 @@
           </li>
         </ul>
         <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
-          
+
           <li class="layui-nav-item layui-hide-xs" lay-unselect>
             <a href="javascript:;" layadmin-event="theme">
               <i class="layui-icon layui-icon-theme"></i>
@@ -121,7 +121,7 @@
           </li>
         </ul>
       </div>
-      
+
       <!-- 侧边菜单 -->
       @include('erp.father.aside')
       <!-- 页面标签 -->
@@ -170,7 +170,7 @@
           <iframe src="/admins/home_page" frameborder="0" class="layadmin-iframe"></iframe>
         </div>
       </div>
-      
+
       <!-- 辅助元素，一般用于移动设备下遮罩 -->
       <div class="layadmin-body-shade" layadmin-event="shade"></div>
     </div>
@@ -326,4 +326,5 @@
   </script>
   @endsection
 </body>
+@yield('hidden_dom')
 </html>

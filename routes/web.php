@@ -45,7 +45,7 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
     Route::resource('supplier','SupplierController');
     Route::resource('salesman','SalesmanController');
     Route::resource('storage','StorageController');
-    Route::resource('order','OrderController');
+//    Route::resource('order','OrderController');
     Route::resource('product_unit','ProductUnitController');
 
 
@@ -53,7 +53,17 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
     Route::post('uploader/pic_upload','UploaderController@picUpload');  //图片异步上传
 
 
+    /****订单相关****/
+    Route::group(['middleware' => [] ],
+        function($router){
+            $router->resource('/orders', 'OrderController');
+            $router->get('/create_import', 'OrderController@create_import')->name('orders.create_import');
+            $router->post('/import_orders', 'OrderController@import')->name('orders.import');
+            //审核
+            $router->post('/update_audited_at/{id}', 'OrderController@audit')->name('orders.audit');
 
+    });
+    /****END****/
 
 
 });
