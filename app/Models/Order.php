@@ -40,6 +40,10 @@ class Order extends Model
      * 已审核
      */
     const STATUS_AUDITED = 2;
+    /**
+     * 已取消
+     */
+    const STATUS_CANCELLED = 6;
 
 
     public function order_skus(){
@@ -58,14 +62,14 @@ class Order extends Model
 
         $limit = $request->get('limit');
 
-        $search_keys = $request->get('key');
-
-        $sku_name = array_get($search_keys, 'sku_name', '');
+        $keywords = $request->get('keywords');
+        $status = $request->get('status');
 
         $per_page = $limit ?: $this->page_size;
 
         $orders = self::with(['admin_user:admin_id,admin_name', 'order_skus','order_skus.sku:sku_id,sku_name,sku_value'])
-            ->ofSkuName($sku_name)
+            ->ofKeywords($keywords)
+            ->ofStatus($status)
             ->select('orders.*')
             ->orderBy('orders.submit_order_at','desc')
             ->paginate($per_page);
@@ -75,19 +79,28 @@ class Order extends Model
         return [$orders, $search ];
     }
 
-    public function scopeOfSkuName($query, $sku_name){
+    public function scopeOfKeywords($query, $keywords){
 
-        if(!$sku_name){
+        if(!$keywords){
             return $query;
         }
 
-        $sku_ids = ProductGoods::where('sku_name', $sku_name)->pluck('sku_id');
+        $sku_ids = ProductGoods::where('sku_name', $keywords)->orWhere('sku_id', $keywords)->pluck('sku_id');
         if($sku_ids->count() > 0)
         {
             $order_ids = OrderSku::whereIn('sku_id', $sku_ids)->pluck('order_id')->unique();
             if($order_ids->count() >0){
                 return $query->whereIn('id', $order_ids);
             }
+        }else{
+            return $query->where('sn', $keywords);
         }
+    }
+
+    public function scopeOfStatus($query, $status){
+        if(!$status){
+            return $query;
+        }
+        return $query->where('status', $status);
     }
 }

@@ -60,7 +60,8 @@ Route::group(['prefix'=>'admins','middleware'=>'auth:check','namespace'=>'Erp'],
             $router->get('/create_import', 'OrderController@create_import')->name('orders.create_import');
             $router->post('/import_orders', 'OrderController@import')->name('orders.import');
             //审核
-            $router->post('/update_audited_at/{id}', 'OrderController@audit')->name('orders.audit');
+            $router->post('/orders/update_audited_at/{id}', 'OrderController@audit')->name('orders.audit');
+            $router->post('/orders/batch_audit', 'OrderController@batch_audit')->name('orders.batch_audit');
 
     });
     /****END****/

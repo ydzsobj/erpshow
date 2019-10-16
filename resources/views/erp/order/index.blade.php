@@ -4,23 +4,49 @@
     /*数据表格内容换行显示*/
     .layui-table-cell {
         height: auto;
+        width:50px;
                 /*空白会被浏览器忽略*/
-        white-space: normal;
+        /* white-space: normal; */
                 /*允许长单词换行到下一行*/
-        word-wrap: break-word;
+        /* word-wrap: break-word; */
                 /*允许在单词内换行*/
-        word-break: break-all;
+        /* word-break: break-all; */
     }
     </style>
-    <div class="layui-row" style="margin:15px;">
-        <div class="layui-col-md3">
-            产品名称
-            <div class="layui-inline">
-                <input class="layui-input" name="sku_name" id="demoReload" autocomplete="off">
-            </div>
-            <button class="layui-btn" data-type="reload">搜索</button>
-        </div>
+    <div class="layui-row" style="margin-top:10px;">
+            <form class="layui-form" action="">
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">请输入</label>
+                        <div class="layui-input-block">
+                            <div class="layui-inline" style="width:500px;">
+                                <input class="layui-input" name="sku_name" id="demoReload" placeholder="产品名称/SN编号/SKU编号"  autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-inline">
+                            <select name="status" id="search_status">
+                                <option value="0">全部</option>
+                                @foreach ($status_list as $key=>$status)
+                                    <option value="{{ $key }}">{{ $status }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-row demoTable">
+                    <a class="layui-btn" data-type="reload" style="margin-left:600px;" id='search'>搜索</a>
+                    &nbsp;<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+
+            </form>
     </div>
+
+
 
     <table id="demo" lay-filter="test"></table>
 
@@ -64,7 +90,8 @@
                 ,page: true //开启分页
                 ,limit:20//分页大小
                 ,toolbar: '#toolbarDemo'
-                ,width:1700
+                // ,width:1800
+                // ,cellMinWidth:50
                 ,defaultToolbar: ['exports']
                 ,parseData: function(res){ //res 即为原始返回的数据
                     return {
@@ -74,7 +101,8 @@
                         "data": res.data.data //解析数据列表
                     };
                 }
-                ,cols: [[ //表头
+                ,cols: [[ //
+                    ,{type: 'checkbox', width:50, fixed:'left'}
                     ,{field: 'submit_order_at', title: '下单时间',width:160}
                     ,{field: 'sn', title: '订单编号',width:180}
                     ,{field: 'amount', title: '总件数',width:80}
@@ -119,6 +147,8 @@
                                 color = 'red';
                             }else if(row.status == 2){
                                 color = 'green';
+                            }else if(row.status == 6){
+                                color = 'orange';
                             }
 
                             return "<span style='color:" + color +"'>" + row.status_name +"</span>";
@@ -129,7 +159,18 @@
                             return row.admin_user.admin_name;
                         }
                     }
-                    ,{title: '操作', width:180, toolbar: '#barDemo',fixed:'right' }
+                    ,{title: '操作', width:120, fixed:'right',
+                         templet: function(row){
+                             if(row.status == 1){
+                                return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>' +
+                                    '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="audit">审核</a>';
+                             }else if(row.status == 2){
+                                return '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="cancel_order">取消</a>';
+                             }else{
+                                 return '';
+                             }
+                         }
+                     }
                 ]],
 
                 done: function() {
@@ -141,22 +182,21 @@
             var active = {
                 reload: function(){
                     var demoReload = $('#demoReload');
-
+                    console.log('do reload');
                     //执行重载
                     table.reload('demo', {
                         page: {
                             curr: 1 //重新从第 1 页开始
                         }
                         ,where: {
-                            key: {
-                                sku_name: demoReload.val()
-                            }
+                            keywords: demoReload.val(),
+                            status: $("#search_status").val(),
                         }
                     }, 'data');
                 }
             };
             //点击搜索
-            $('.demoTable .layui-btn').on('click', function(){
+            $('#search').on('click', function(){
                 var type = $(this).data('type');
                 active[type] ? active[type].call(this) : '';
             });
@@ -164,8 +204,13 @@
             //监听头部工具条
             table.on('toolbar(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
                 var data = obj.data; //获得当前行数据
+                console.log(obj);
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                 var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+                var checkStatus = table.checkStatus(obj.config.id);
+
+                console.log(checkStatus.data);
 
                 if(layEvent === 'import_order'){ //
                     //do somehing
@@ -176,6 +221,42 @@
                         area:['600px','300px'],
                         content: $("#fm_import")
                     })
+                }else if(layEvent == 'batch_audit'){
+                    //批量审核
+                    if(checkStatus.data.length == 0){
+                        layer.msg('请先选择订单');
+                        return false;
+                    }
+
+                    var selected_rows = checkStatus.data;
+                    var selected_ids = [];
+                    for(var i=0;i<selected_rows.length;i++){
+                        selected_ids.push(selected_rows[i].id);
+                    }
+                    console.log(selected_ids);
+
+                    layer.confirm('确定要审核通过吗?', function(index){
+                        layer.close(index);
+                        //向服务端发送指令
+                        $.ajax({
+                            type:'POST',
+                            url: "{{ route('orders.batch_audit') }}",
+                            data:{ _token: "{{ csrf_token() }}" ,order_ids: selected_ids },
+                            dataType:"json",
+                            success:function(msg){
+                                 console.log(msg);
+                                 layer.msg(msg.msg);
+                                 if(msg.success){
+                                    table.reload('demo');
+                                 }
+                            },
+                            error: function(data){
+                                layer.msg('请求接口失败',{icon:2,time:2000});
+                            }
+
+                        })
+                    });
+
                 }
             });
 
@@ -186,28 +267,24 @@
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                 var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
 
-                var route = '/admins/update_audited_at/' + data.id;
+                var route = '/admins/orders/update_audited_at/' + data.id;
 
                 if(layEvent === 'audit'){ //
                     //do somehing
-                    layer.confirm('确定要审核吗?', function(index){
+                    layer.confirm('确定要审核通过吗?', function(index){
                         layer.close(index);
                         //向服务端发送指令
                         $.ajax({
                             type:'POST',
                             url: route,
-                            data:{ _token: "{{ csrf_token() }}" },
+                            data:{ _token: "{{ csrf_token() }}" ,action: 'audit'},
                             dataType:"json",
                             success:function(msg){
                                  console.log(msg);
                                  layer.msg(msg.msg);
                                  if(msg.success){
-                                    obj.update({
-                                        status: msg.data.status
-                                        ,status_name: '已审核'
-                                    });
-                                 }
 
+                                 }
                             },
                             error: function(data){
                                 layer.msg('请求接口失败',{icon:2,time:2000});
@@ -215,6 +292,30 @@
 
                         })
                     });
+                }else if(layEvent == 'cancel_order'){
+                    //取消订单
+                    layer.confirm('确定要取消订单吗?', function(index){
+                        layer.close(index);
+                        //向服务端发送指令
+                        $.ajax({
+                            type:'POST',
+                            url: route,
+                            data:{ _token: "{{ csrf_token() }}",action:'cancel_order'},
+                            dataType:"json",
+                            success:function(msg){
+                                 console.log(msg);
+                                 layer.msg(msg.msg);
+                                 if(msg.success){
+                                    table.reload('demo');
+                                 }
+                            },
+                            error: function(data){
+                                layer.msg('请求接口失败',{icon:2,time:2000});
+                            }
+
+                        })
+                    });
+
                 } else if(layEvent === 'del'){ //删除
                     layer.confirm('真的删除行么', function(index){
                     obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
@@ -318,14 +419,10 @@
 
 </script>
 
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="audit">审核</a>
- </script>
-
  <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
       <button class="layui-btn layui-btn-sm" lay-event="import_order" >导入订单</button>
+      <button class="layui-btn layui-btn-sm" lay-event="batch_audit" >批量审核</button>
     </div>
   </script>
 

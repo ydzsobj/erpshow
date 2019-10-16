@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Erp;
 
+use App\Events\OrderAuditSuccessed;
 use App\Imports\OrdersImport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImportOrderRequest;
 use App\Models\Order;
+use App\Models\OrderAuditLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,7 +19,8 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $countries = config('order.country_list');
-        return view('erp.order.index', compact('countries'));
+        $status_list = config('order.status_list');
+        return view('erp.order.index', compact('countries','status_list'));
     }
 
     public function create_import()
@@ -101,7 +104,12 @@ class OrderController extends Controller
 
     }
 
+    /**
+     * 审核、取消订单
+     */
     public function audit(Request $request, $id){
+
+        $action = $request->get('action');
 
         $order = Order::find($id);
 
@@ -109,13 +117,47 @@ class OrderController extends Controller
 
         $order->audited_admin_id = Auth::user()->id;
 
-        $order->status = Order::STATUS_AUDITED;
+        if($action == 'cancel_order'){
+            $order->status = Order::STATUS_CANCELLED;
+            $remark = '取消订单';
+        }else{
+            $order->status = Order::STATUS_AUDITED;
+            $remark = '审核通过';
+        }
 
         $res = $order->save();
+
+        if($res){
+            event(new OrderAuditSuccessed([$order->id], $remark ?? ''));
+        }
 
         $msg = $res ? '设置成功':'设置失败';
 
         return returned($res, $msg, $order);
 
+    }
+
+    /**
+     * @批量审核
+     */
+    public function batch_audit(Request $request){
+
+        $order_ids = $request->post('order_ids');
+
+        $data = [
+            'last_audited_at' => Carbon::now(),
+            'status' => Order::STATUS_AUDITED,
+            'audited_admin_id' => Auth::user()->id
+        ];
+
+        $res = Order::whereIn('id', $order_ids)->update($data);
+
+        if($res){
+            event(new OrderAuditSuccessed($order_ids, '审核通过'));
+        }
+
+        $msg = $res ? '设置成功':'设置失败';
+
+        return returned($res, $msg, $order_ids);
     }
 }
