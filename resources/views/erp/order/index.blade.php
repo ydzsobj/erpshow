@@ -20,8 +20,8 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">请输入</label>
                         <div class="layui-input-block">
-                            <div class="layui-inline" style="width:500px;">
-                                <input class="layui-input" name="sku_name" id="demoReload" placeholder="产品名称/SN编号/SKU编号"  autocomplete="off">
+                            <div class="layui-inline" style="width:300px;">
+                                <input class="layui-input" name="sku_name" id="demoReload" placeholder="产品名称/订单编号/SKU编号"  autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -36,6 +36,18 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="layui-inline">
+                            <label class="layui-form-label">下单时间</label>
+                            <div class="layui-input-block">
+                                <div class="layui-inline">
+                                    <input class="layui-input" name="start_date" id="start_date" placeholder="开始时间">
+                                </div>-
+                                <div class="layui-inline">
+                                        <input class="layui-input" name="end_date" id="end_date" placeholder="结束时间">
+                                    </div>
+                            </div>
+                        </div>
                 </div>
 
                 <div class="layui-row demoTable">
@@ -45,8 +57,6 @@
 
             </form>
     </div>
-
-
 
     <table id="demo" lay-filter="test"></table>
 
@@ -77,10 +87,11 @@
 @section('js')
 
     <script>
-        layui.use(['table', 'upload','layer'], function(){
+        layui.use(['table', 'upload','layer', 'laydate'], function(){
             var table = layui.table;
             var upload = layui.upload;
             var layer = layui.layer;
+            var laydate = layui.laydate;
             var $ = layui.jquery;
 
             // //第一个实例
@@ -191,6 +202,9 @@
                         ,where: {
                             keywords: demoReload.val(),
                             status: $("#search_status").val(),
+                            start_date:$("#start_date").val(),
+                            end_date:$("#end_date").val(),
+
                         }
                     }, 'data');
                 }
@@ -199,6 +213,16 @@
             $('#search').on('click', function(){
                 var type = $(this).data('type');
                 active[type] ? active[type].call(this) : '';
+            });
+
+            laydate.render({
+                elem: '#start_date'
+                ,type: 'datetime'
+            });
+
+            laydate.render({
+                elem: '#end_date'
+                ,type: 'datetime'
             });
 
             //监听头部工具条

@@ -61,15 +61,17 @@ class Order extends Model
     public function get_data($request){
 
         $limit = $request->get('limit');
-
         $keywords = $request->get('keywords');
         $status = $request->get('status');
+        $start_date = $request->get('start_date');
+        $end_date = $request->get('end_date');
 
         $per_page = $limit ?: $this->page_size;
 
         $orders = self::with(['admin_user:admin_id,admin_name', 'order_skus','order_skus.sku:sku_id,sku_name,sku_value'])
             ->ofKeywords($keywords)
             ->ofStatus($status)
+            ->ofSubmitOrderDate($start_date, $end_date)
             ->select('orders.*')
             ->orderBy('orders.submit_order_at','desc')
             ->paginate($per_page);
@@ -102,5 +104,13 @@ class Order extends Model
             return $query;
         }
         return $query->where('status', $status);
+    }
+
+    public function scopeOfSubmitOrderDate($query, $start_date,$end_date){
+        if(!$start_date || !$end_date){
+            return $query;
+        }
+
+        $query->whereBetween('submit_order_at', [$start_date, $end_date]);
     }
 }
