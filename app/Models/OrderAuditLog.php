@@ -13,4 +13,8 @@ class OrderAuditLog extends Model
         'reamrk',
         'admin_id',
     ];
+
+    public function admin_user(){
+        return $this->belongsTo(Admin::class,'admin_id')->withDefault();
+    }
 }

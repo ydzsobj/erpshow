@@ -54,6 +54,14 @@ class Order extends Model
         return $this->belongsTo(Admin::class,'admin_id');
     }
 
+    public function audited_admin_user(){
+        return $this->belongsTo(Admin::class, 'audited_admin_id')->withDefault();
+    }
+
+    public function audit_logs(){
+        return $this->hasMany(OrderAuditLog::class);
+    }
+
     public function by_sn($sn){
         return self::where('sn', $sn)->first();
     }
@@ -68,7 +76,16 @@ class Order extends Model
 
         $per_page = $limit ?: $this->page_size;
 
-        $orders = self::with(['admin_user:admin_id,admin_name', 'order_skus','order_skus.sku:sku_id,sku_name,sku_value'])
+        $orders = self::with([
+                'admin_user:admin_id,admin_name',
+                'audited_admin_user:admin_id,admin_name',
+                'order_skus',
+                'order_skus.sku:sku_id,sku_name,sku_value',
+                'audit_logs' => function($query){
+                    $query->orderBy('id', 'desc');
+                },
+                'audit_logs.admin_user:admin_id,admin_name'
+            ])
             ->ofKeywords($keywords)
             ->ofStatus($status)
             ->ofSubmitOrderDate($start_date, $end_date)

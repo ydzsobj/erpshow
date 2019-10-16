@@ -115,7 +115,7 @@ class OrderController extends Controller
 
         $order->last_audited_at = Carbon::now();
 
-        $order->audited_admin_id = Auth::user()->id;
+        $order->audited_admin_id = Auth::user()->admin_id;
 
         if($action == 'cancel_order'){
             $order->status = Order::STATUS_CANCELLED;

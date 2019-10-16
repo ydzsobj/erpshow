@@ -103,7 +103,7 @@
                 ,toolbar: '#toolbarDemo'
                 // ,width:1800
                 // ,cellMinWidth:50
-                ,defaultToolbar: ['exports']
+                ,defaultToolbar: ['']
                 ,parseData: function(res){ //res 即为原始返回的数据
                     return {
                         "code": res.code, //解析接口状态
@@ -170,15 +170,22 @@
                             return row.admin_user.admin_name;
                         }
                     }
-                    ,{title: '操作', width:120, fixed:'right',
+                    ,{field: 'audited_admin_user', title: '审核人', width:120,
+                        templet:function(row){
+                            return row.audited_admin_user.admin_name;
+                        }
+                    }
+
+                    ,{title: '操作', width:150, fixed:'right',
                          templet: function(row){
                              if(row.status == 1){
                                 return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>' +
                                     '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="audit">审核</a>';
                              }else if(row.status == 2){
-                                return '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="cancel_order">取消</a>';
+                                return '<a class="layui-btn layui-btn-xs" lay-event="audit_logs">审核记录</a>' +
+                                 '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="cancel_order">取消</a>';
                              }else{
-                                 return '';
+                                 return '<a class="layui-btn layui-btn-xs" lay-event="audit_logs">审核记录</a>';
                              }
                          }
                      }
@@ -307,7 +314,7 @@
                                  console.log(msg);
                                  layer.msg(msg.msg);
                                  if(msg.success){
-
+                                    table.reload('demo');
                                  }
                             },
                             error: function(data){
@@ -338,6 +345,26 @@
                             }
 
                         })
+                    });
+
+                }else if(layEvent == 'audit_logs'){
+                    //审核记录
+                    var table_str = '<table class="layui-table"><tr><th>时间</th><th>审核人</th><th>备注</th></tr>';
+                    var audit_logs = data.audit_logs;
+                    console.log(audit_logs);
+                    for(var i=0;i<audit_logs.length;i++){
+                        var tr_str = '<tr><td>' + audit_logs[i].created_at +'</td><td>' + audit_logs[i].admin_user.admin_name
+                            +'</td><td>' + audit_logs[i].remark +'</td></tr>';
+                        table_str += tr_str;
+                    }
+                    table_str += '</table>';
+
+                    console.log(table_str);
+
+                    layer.open({
+                        title:'审核记录',
+                        content: table_str,
+                        area:['500px','300px']
                     });
 
                 } else if(layEvent === 'del'){ //删除
@@ -449,6 +476,5 @@
       <button class="layui-btn layui-btn-sm" lay-event="batch_audit" >批量审核</button>
     </div>
   </script>
-
 
 @endsection
