@@ -64,7 +64,7 @@
 
 @section('hidden_dom')
 
-<form class="layui-form" action="" id ="fm_import" style="display:none;">
+    <form class="layui-form" action="" id ="fm_import" style="display:none;">
         <div class="layui-form-item">
                 <label class="layui-form-label">国家地区</label>
                 <div class="layui-input-block">

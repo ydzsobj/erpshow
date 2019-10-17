@@ -19,6 +19,10 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
+        'Illuminate\Database\Events\QueryExecuted' => [
+            'App\Listeners\QueryListener',
+        ],
+
         'App\Events\OrderAuditSuccessed' => [
             'App\Listeners\OrderAuditSuccessedListener',
         ],
